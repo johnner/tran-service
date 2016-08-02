@@ -1,0 +1,94 @@
+{% extends "base.html" %}
+{% block content %}
+<div ng-controller="ProfileController">
+    <div class="dictionary-content b-dict" ng-controller="DictionaryController">
+        <h3 class="b-dict__header">Добавьте слова в словарь</h3>
+        <form name="wordform" class="add-form" action="" method="post">
+            <fieldset class="add-form-fieldset">
+                <label class="add-form__field-label" for="word">Слово:</label>
+                <input name="word"
+                       ng-model="dict.nWord.name"
+                       ng-change="dict.checkUnique()"
+                       class="add-form__textbox input-field"
+                       type="text" tabindex="1"
+                       autofocus
+                       focus-on="new.word"
+                       ng-required="true" />
+                <current-lang data-currentlang="{{lang[0]}}" ng-model="dict.nWord.language" class="add-form__selectlanguage" tabindex="6">
+                {{ form.language }}
+                </current-lang>
+                <br>
+                <!-- validations -->
+                <span class="input-error" ng-show="wordform.$dirty && wordform.$error.required">Обязательное поле!</span>
+                <span class="input-error" ng-show="!dict.$nameUnique">Такое слово уже есть</span>
+            </fieldset>
+            <fieldset class="add-form-fieldset">
+                <label class="add-form__field-label" for="translation">Перевод:</label>
+                <input name="translation" ng-model="dict.nWord.translation" class="add-form__textbox input-field" type="text" tabindex="2"></input>
+            </fieldset>
+            <fieldset class="add-form-fieldset">
+                <label class="add-form__field-label" for="translation">Звук (URL):</label>
+                <input name="sound" ng-model="dict.nWord.sound" class="add-form__textbox input-field" type="text" tabindex="3"></input>
+            </fieldset>
+            <fieldset class="add-form-fieldset">
+                <input type="submit" ng-click="addWord($event)" class="add-form__btn input-field" value="Добавить" tabindex="4"></input>
+            </fieldset>
+        </form>
+        {%raw%}
+        <h4 class="b-dict__language"><span class="j-lang">{{profile.language}}</span>:</h4>
+        
+          
+            <h3 ng-if="!dict.words.length">Словарь пуст</h3>
+
+              <span class="words-total">Всего слов: {{ dict.total }}</span>
+              <!-- Responsive table starts here -->
+              <!-- For correct display on small screens you must add 'data-title' to each 'td' in your table -->
+
+              <div class="table-responsive-vertical shadow-z-1" ng-if="dict.words.length">
+                  <!-- Table starts here -->
+                  <table id="table" class="table table-hover table-mc-light-blue">
+                      <thead>
+                        <tr>
+                          <th class="table-header">#</th>
+                          <th class="table-header">Слово</th>
+                          <th class="table-header">Перевод</th>
+                          <th class="table-header">Дата добавления</th>
+                          <th class="table-header">Удалить</th>
+                          <th class="table-header">
+                            <md-button class="md-primary md-hue-1 export-button" title="Экспортировать выбранные слова в файл" ng-click="doExport()">
+                              <!--<a href="/export/" title="Экспортировать выбранные слова в файл">Экспорт
+                              </a> -->
+                              Экспорт
+                            </md-button>
+                            <md-checkbox ng-model="dict.allExport" aria-label="Все" class="all-export-checkbox md-hue-2">
+                            Все
+                            </md-checkbox>   
+                          </th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr ng-repeat="word in dict.words track by word.id">
+                          <td class="number-col" data-title="#">{{ $index + 1 }}</td>
+                          <td class="word-col" data-title="Word">{{ word.name }}</td>
+                          <td class="translation-col" data-title="Translation">{{ word.translation }}</td>
+                          <td data-title="Date" class="date-col">
+                            <span>{{ word.createdDate | asDate | date:'dd.MM.yyyy hh:mm'}}</span>
+                          </td>
+                          <td  data-title="Delete" class="delete-col">
+                              <a href="" ng-click="dict.removeWord(word.id)" title="Удалить слово" data-wordid="{{word.id}}">X</a>
+                          </td>
+                          <td data-title="Exports" class="export-col">
+                            <md-checkbox ng-model="dict.words[$index].export" ng-change="exportCheck(word.id)" aria-label="Checkbox 1" class="export-checkbox md-hue-2">
+                            </md-checkbox>
+                          </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+        {% endraw %}
+
+
+
+    </div>
+</div>
+{% endblock %}

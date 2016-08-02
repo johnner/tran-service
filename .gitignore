@@ -1,0 +1,13 @@
+.idea
+venv
+env
+bower_components
+node_modules
+*.pyc
+tran/static/js/.DS_Store
+
+transervice.ini
+tran.nginx.conf
+
+tran/config_local.py
+.DS_Store

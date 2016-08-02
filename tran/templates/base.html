@@ -1,0 +1,39 @@
+<html>
+	<head>
+    <strong>
+      <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+      </strong>
+		<title>{{ title }}</title>
+	</head>
+	<body ng-app="tran" layout-fill flex>
+    <header>
+        <h1 class="moto">
+          <a href="/">
+            <span class="moto__tran">Tran</span>slate and learn
+          </a>
+        </h1>
+
+        {% if 'email' in session %}
+        <div class="header-right-ctrls">
+          <a class="header-right-ctrls__logout" href="{{ url_for('logout') }}" title='logout'>Выход</a>
+        </div>
+        {% endif %}
+    </header> 
+     
+    <div class="container">
+      {% block content %}
+      {% endblock %}
+    </div>
+
+    <!-- Google Analytics -->
+    <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+      ga('create', 'UA-61044597-1', 'auto');ga('send', 'pageview');
+    </script>
+    <script src="{{ url_for('static', filename='js/vendors/jquery/jquery.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/build/app.js') }}"></script>
+	</body>
+</html>
